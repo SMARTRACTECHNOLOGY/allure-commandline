@@ -1,0 +1,31 @@
+= Allure Command Line
+A Docker Image that has allure-commandline tools for creating reports off XUnit results.
+
+WARNING: This is a publicly available image on https://hub.docker.com/r/smartcosmos/allure-commandline/[Docker Hub], and as such *no private information should be included in the images*.
+
+== Usage
+
+=== Local
+
+[source, bash]
+----
+docker run \
+    -v $(pwd)/allure-report:/allure-report \
+    -v $(pwd)/allure-results:/allure-results \
+    -v $(pwd)/allure-config:/allure-config \
+    smartcosmos/allure-commandline generate /allure-results -o /allure-report --clean
+----
+
+This assumes your results were in the local folder that had `allure-results`.  You can optionally pass in configuration from the `allure-config` folder.
+
+=== Jenkins
+
+In your projects Jenkinsfile use it like this:
+
+[source, groovy]
+----
+docker.image("smartcosmos/allure-commandline:latest").inside {
+    sh "allure-commandline generate allure-results -o allure-report --clean"
+  }
+}
+----
